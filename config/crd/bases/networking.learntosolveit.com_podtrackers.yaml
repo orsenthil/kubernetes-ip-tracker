@@ -1,0 +1,99 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.17.2
+  name: podtrackers.networking.learntosolveit.com
+spec:
+  group: networking.learntosolveit.com
+  names:
+    kind: PodTracker
+    listKind: PodTrackerList
+    plural: podtrackers
+    singular: podtracker
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - jsonPath: .status.podIPs.length()
+      name: Pods
+      type: integer
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: PodTracker is the Schema for the podtrackers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PodTrackerSpec defines the desired state of PodTracker
+            properties:
+              namespace:
+                description: Namespace to track pods in, if empty tracks all namespaces
+                type: string
+            type: object
+          status:
+            description: PodTrackerStatus defines the observed state of PodTracker
+            properties:
+              lastUpdateTime:
+                description: LastUpdateTime is the last time the resource was updated
+                format: date-time
+                type: string
+              podIPs:
+                description: PodIPs contains a list of all tracked pods and their
+                  IPs
+                items:
+                  description: PodInfo contains information about a pod
+                  properties:
+                    creationTimestamp:
+                      description: CreationTimestamp is when the pod was created
+                      format: date-time
+                      type: string
+                    ip:
+                      description: IP is the IP address of the pod
+                      type: string
+                    namespace:
+                      description: Namespace is the namespace of the pod
+                      type: string
+                    nodeName:
+                      description: NodeName is the name of the node running the pod
+                      type: string
+                    phase:
+                      description: Phase is the current lifecycle phase of the pod
+                      type: string
+                    podName:
+                      description: PodName is the name of the pod
+                      type: string
+                  required:
+                  - creationTimestamp
+                  - ip
+                  - namespace
+                  - nodeName
+                  - phase
+                  - podName
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

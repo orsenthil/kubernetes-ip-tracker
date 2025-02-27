@@ -1,0 +1,29 @@
+# This rule is not used by the project kubernetes-ip-tracker itself.
+# It is provided to allow the cluster admin to help manage permissions for users.
+#
+# Grants read-only access to networking.learntosolveit.com resources.
+# This role is intended for users who need visibility into these resources
+# without permissions to modify them. It is ideal for monitoring purposes and limited-access viewing.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: kubernetes-ip-tracker
+    app.kubernetes.io/managed-by: kustomize
+  name: podtracker-viewer-role
+rules:
+- apiGroups:
+  - networking.learntosolveit.com
+  resources:
+  - podtrackers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networking.learntosolveit.com
+  resources:
+  - podtrackers/status
+  verbs:
+  - get

@@ -1,0 +1,7 @@
+apiVersion: networking.learntosolveit.com/v1
+kind: PodTracker
+metadata:
+  name: cluster-pod-tracker
+spec:
+  # Leave namespace empty to track all namespaces
+  namespace: ""
