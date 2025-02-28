@@ -19,7 +19,6 @@ sudo mv kubebuilder /usr/local/bin/
 # Verify installation
 kubebuilder version
 ```
-# Create the project
 
 ```bash
 # Create project directory
@@ -31,14 +30,12 @@ go mod init github.com/orsenthil/kubernetes-ip-tracker
 kubebuilder init --domain learntosolveit.com --repo github.com/orsenthil/kubernetes-ip-tracker
 ```
 
-# Create the API types and controller scaffold
+# API types and controller scaffold
 
 ```bash
 # Create API types and controller scaffold
 kubebuilder create api --group networking --version v1 --kind PodTracker --resource --controller
 ```
-
-# Code 
 
 * Define pod tracker in
 
@@ -52,20 +49,18 @@ api/v1/podtracker_types.go
 controllers/podtracker_controller.go
 ```
 
-* Update main
-
 ```shell
 main.go
 ```
 
-# Create a Sample Pod Tracker Custom Resource
+# Sample Pod Tracker Custom Resource
 
 ```shell
 mkdir -p config/samples
 vi config/samples/networking_v1_podtracker.yaml
 ```
 
-# Generate CRDs, Manifest and RBAC
+# CRDs, Manifest and RBAC
 
 ```shell
 # Generate CRD manifests
@@ -75,12 +70,12 @@ make manifests
 This will create the CRD definition in `config/crd/bases/networking.learntosolveit.com_podtrackers.yaml`
 
 
-# Build Controller
+# Controller
 ```shell
 make build
 ```
 
-## Install CRDs to the cluster
+## CRDs to the cluster
 
 ```shell
 # Install CRDs to the cluster
