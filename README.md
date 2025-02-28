@@ -1,6 +1,14 @@
 # kubernetes-ip-tracker
 Kubernetes Pod IP tracker
 
+The CRD (PodTracker) defines the API interface for pod IP tracking
+The controller continuously monitors Pods across the cluster
+When Pods are created/updated/deleted, the controller updates our PodTracker's status
+The PodTracker status serves as a centralized registry accessible via the Kubernetes API
+
+This implementation provides a complete, production-ready Pod IP tracker that can be deployed on any Kubernetes cluster.
+The CRD and controller follow best practices for Kubernetes extensions.
+
 # Setup the kubebuilder
 
 ```bash
