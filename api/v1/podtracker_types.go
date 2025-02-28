@@ -48,11 +48,48 @@ type PodInfo struct {
 	Phase string `json:"phase"`
 }
 
-// PodTrackerStatus defines the observed state of PodTracker
+// NodeInfo contains information about a node
+type NodeInfo struct {
+	// NodeName is the name of the node
+	NodeName string `json:"nodeName"`
+
+	// NodeIP is the primary IP address of the node
+	NodeIP string `json:"nodeIP"`
+
+	// PodIPs lists all pods running on this node
+	PodIPs []PodInfo `json:"podIPs,omitempty"`
+
+	// Resources contains node resource information
+	Resources NodeResources `json:"resources,omitempty"`
+
+	// LastUpdateTime is when this node was last updated
+	LastUpdateTime metav1.Time `json:"lastUpdateTime"`
+}
+
+// NodeResources contains resource information about a node
+type NodeResources struct {
+	// CPU capacity
+	CPUCapacity string `json:"cpuCapacity"`
+
+	// Memory capacity
+	MemoryCapacity string `json:"memoryCapacity"`
+
+	// CPU allocatable
+	CPUAllocatable string `json:"cpuAllocatable"`
+
+	// Memory allocatable
+	MemoryAllocatable string `json:"memoryAllocatable"`
+}
+
+// Update the PodTrackerStatus
 type PodTrackerStatus struct {
 	// PodIPs contains a list of all tracked pods and their IPs
 	// +optional
 	PodIPs []PodInfo `json:"podIPs,omitempty"`
+
+	// NodeInfo contains node-specific information
+	// +optional
+	NodeInfo []NodeInfo `json:"nodeInfo,omitempty"`
 
 	// LastUpdateTime is the last time the resource was updated
 	// +optional
