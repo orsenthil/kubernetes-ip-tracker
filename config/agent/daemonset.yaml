@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: pod-ip-tracker-agent
+  namespace: kubernetes-ip-tracker-system
+  labels:
+    app: pod-ip-tracker-agent
+spec:
+  selector:
+    matchLabels:
+      app: pod-ip-tracker-agent
+  template:
+    metadata:
+      labels:
+        app: pod-ip-tracker-agent
+    spec:
+      serviceAccountName: pod-ip-tracker-agent
+      containers:
+      - name: agent
+        image: docker.io/skumaran/kubernetes-ip-tracker-agent:v0.1.0
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName

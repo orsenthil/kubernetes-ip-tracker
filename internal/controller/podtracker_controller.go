@@ -126,8 +126,14 @@ func (r *PodTrackerReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 
 	// Update status if needed
 	if !reflect.DeepEqual(podTracker.Status.PodIPs, podIPs) {
+		existingNodeInfo := podTracker.Status.NodeInfo
+
+		// Update the PodIPs and timestamp
 		podTracker.Status.PodIPs = podIPs
 		podTracker.Status.LastUpdateTime = metav1.NewTime(time.Now())
+
+		// Restore the NodeInfo
+		podTracker.Status.NodeInfo = existingNodeInfo
 
 		if err := r.Status().Update(ctx, podTracker); err != nil {
 			logger.Error(err, "Failed to update PodTracker status")

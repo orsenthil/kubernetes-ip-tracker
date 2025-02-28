@@ -1,0 +1,24 @@
+FROM golang:1.21 as builder
+
+WORKDIR /workspace
+# Copy the Go Modules manifests
+COPY go.mod go.mod
+COPY go.sum go.sum
+# Cache dependencies
+RUN go mod download
+
+# Copy the source code
+COPY cmd/ cmd/
+COPY api/ api/
+COPY internal/ internal/
+
+# Build
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o agent cmd/agent/main.go
+
+# Use distroless as minimal base image
+FROM gcr.io/distroless/static:nonroot
+WORKDIR /
+COPY --from=builder /workspace/agent .
+USER 65532:65532
+
+ENTRYPOINT ["/agent"]

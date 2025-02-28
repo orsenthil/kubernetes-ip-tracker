@@ -51,12 +51,89 @@ spec:
                 type: string
             type: object
           status:
-            description: PodTrackerStatus defines the observed state of PodTracker
+            description: Update the PodTrackerStatus
             properties:
               lastUpdateTime:
                 description: LastUpdateTime is the last time the resource was updated
                 format: date-time
                 type: string
+              nodeInfo:
+                description: NodeInfo contains node-specific information
+                items:
+                  description: NodeInfo contains information about a node
+                  properties:
+                    lastUpdateTime:
+                      description: LastUpdateTime is when this node was last updated
+                      format: date-time
+                      type: string
+                    nodeIP:
+                      description: NodeIP is the primary IP address of the node
+                      type: string
+                    nodeName:
+                      description: NodeName is the name of the node
+                      type: string
+                    podIPs:
+                      description: PodIPs lists all pods running on this node
+                      items:
+                        description: PodInfo contains information about a pod
+                        properties:
+                          creationTimestamp:
+                            description: CreationTimestamp is when the pod was created
+                            format: date-time
+                            type: string
+                          ip:
+                            description: IP is the IP address of the pod
+                            type: string
+                          namespace:
+                            description: Namespace is the namespace of the pod
+                            type: string
+                          nodeName:
+                            description: NodeName is the name of the node running
+                              the pod
+                            type: string
+                          phase:
+                            description: Phase is the current lifecycle phase of the
+                              pod
+                            type: string
+                          podName:
+                            description: PodName is the name of the pod
+                            type: string
+                        required:
+                        - creationTimestamp
+                        - ip
+                        - namespace
+                        - nodeName
+                        - phase
+                        - podName
+                        type: object
+                      type: array
+                    resources:
+                      description: Resources contains node resource information
+                      properties:
+                        cpuAllocatable:
+                          description: CPU allocatable
+                          type: string
+                        cpuCapacity:
+                          description: CPU capacity
+                          type: string
+                        memoryAllocatable:
+                          description: Memory allocatable
+                          type: string
+                        memoryCapacity:
+                          description: Memory capacity
+                          type: string
+                      required:
+                      - cpuAllocatable
+                      - cpuCapacity
+                      - memoryAllocatable
+                      - memoryCapacity
+                      type: object
+                  required:
+                  - lastUpdateTime
+                  - nodeIP
+                  - nodeName
+                  type: object
+                type: array
               podIPs:
                 description: PodIPs contains a list of all tracked pods and their
                   IPs
